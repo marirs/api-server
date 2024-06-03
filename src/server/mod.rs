@@ -20,6 +20,8 @@ use self::config::Settings;
 /// Catchers like 500, 501, 404, etc
 mod catchers;
 
+mod fairing;
+
 #[derive(Parser, Debug)]
 #[clap(author, version, about)]
 struct CliOpts {
@@ -95,8 +97,11 @@ pub async fn init_server() -> Result<Rocket<Build>> {
     let db_backend = SqliteBackend::new_connection(&db_url).await?;
     db_backend.check_and_create_table().await?;
 
+    let fairing = fairing::Slogger{};
+
     // Configure the Rocket server with configured settings
-    let app = rocket::custom(rocket_cfg);
+    let app = rocket::custom(rocket_cfg)
+        .attach(fairing);
 
     // Catchers
     let app = app.register(
