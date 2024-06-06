@@ -1,5 +1,5 @@
+pub(crate) mod files;
 pub(crate) mod users;
-
 use rocket::{http::Status, serde::json::Value};
 use serde::Serialize;
 

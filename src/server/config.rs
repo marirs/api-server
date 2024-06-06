@@ -9,6 +9,7 @@ const SRV_FORMS_LIMIT: usize = 1024 * 256;
 const SRV_JSON_LIMIT: usize = 1024 * 256;
 const SRV_SECRET_KEY: &str = "t/xZkYvxfC8CSfTSH9ANiIR9t1SvLHqOYZ7vH4fp11s=";
 const SRV_LOG_LEVEL: &str = "info";
+const SVR_STORAGE_PATH: &str = "/tmp/test";
 
 /// Rocket API Server parameters
 #[derive(Deserialize, Clone, Debug, Default)]
@@ -77,6 +78,8 @@ pub struct ServerConfig {
     pub allow_cors: bool,
     #[serde(default = "default_server_log_level")]
     pub log_level: String,
+    #[serde(default = "default_server_storage_path")]
+    pub storage_path: String,
 }
 
 impl Default for ServerConfig {
@@ -90,6 +93,7 @@ impl Default for ServerConfig {
             secret_key: SRV_SECRET_KEY.into(),
             allow_cors: false,
             log_level: SRV_LOG_LEVEL.into(),
+            storage_path: SVR_STORAGE_PATH.into(),
         }
     }
 }
@@ -138,6 +142,9 @@ fn default_server_log_level() -> String {
     SRV_LOG_LEVEL.into()
 }
 
+fn default_server_storage_path() -> String {
+    SVR_STORAGE_PATH.into()
+}
 // All Application defaults
 fn default_db_path() -> String {
     "db.sqlite".into()
